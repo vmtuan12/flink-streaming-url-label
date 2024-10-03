@@ -1,0 +1,13 @@
+{
+    "namespace": "topic_count.access_count",
+    "type": "record",
+    "name": "AccessCount",
+    "fields": [
+        {"name": "subscriberid", "type": "int", "doc": "phone number"},
+        {"name": "label", "type": "string", "doc": "topic name"},
+        {"name": "count", "type": "int", "doc": "access count in given duration"},
+        {"name": "created_at", "type": "int", "doc": "input time string"},
+        {"name": "done_at", "type": "string", "doc": "output time string"},
+        {"name": "time_dif", "type": "int", "doc": "input/output time difference in second"}
+    ]
+}

@@ -1,0 +1,13 @@
+{
+    "namespace": "topic_count.url",
+    "type": "record",
+    "name": "Url",
+    "fields": [
+        {"name": "domain",  "type": "string", "doc": "domain of the accessed url"},
+        {"name": "label", "type": "string", "doc": "topic name"},
+        {"name": "subscriberid", "type": "int", "doc": "phone number"},
+        {"name": "count", "type": "int", "doc": "access count"},
+        {"name": "created_at_sec", "type": "int", "doc": "input time in second"},
+        {"name": "created_at", "type": "string", "doc": "input time string"}
+    ]
+}
