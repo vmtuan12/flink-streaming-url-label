@@ -35,8 +35,6 @@ url_source = KafkaSource.builder() \
 
 # ds_url = env.from_source(url_source, WatermarkStrategy.for_bounded_out_of_orderness(Duration.of_seconds(3)), "Transaction Source", type_info=URL_TYPE_INFO).set_parallelism(3)
 ds_url = env.from_source(url_source, WatermarkStrategy.for_monotonous_timestamps(), "Transaction Source", type_info=URL_TYPE_INFO)
-# ds_flatmap = ds_url.key_by(lambda record: record["subscriberid"], key_type=Types.INT()).flat_map(CountWindowAverage(), output_type=TEST_FLATMAP_TYPE_INFO)
-ds_url.print()
 
 key_url_ds = ds_url.key_by(lambda record: record["subscriberid"], key_type=Types.INT())
 process_ds = key_url_ds.process(CountAccessProcessFunction(), output_type=COUNT_ACCESS_TYPE_INFO)
