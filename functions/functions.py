@@ -22,13 +22,11 @@ class CountAccessProcessFunction(KeyedProcessFunction):
 
     # todo
     def process_element(self, value: Any, ctx: 'KeyedProcessFunction.Context'):
-        print("processing")
         count = value["count"]
         current_timestamp = value["created_at_sec"]
         label = value["label"]
         
         self._add_count_to_state(label=label, event_time=current_timestamp, count=count)
-        print("processing")
         
         accumulator = SumAccumulator()
         event_time_list = list(self._window_state.get(label).keys()).copy()

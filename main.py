@@ -47,18 +47,18 @@ ds_url.print()
 key_url_ds = ds_url.key_by(lambda record: record["subscriberid"], key_type=Types.INT())
 # flatmap_ds = key_url_ds.flat_map(CountWindowAverage(), output_type=COUNT_ACCESS_TYPE_INFO).set_parallelism(22)
 process_ds = key_url_ds.process(CountAccessProcessFunction(), output_type=COUNT_ACCESS_TYPE_INFO)
-process_ds.print()
+# process_ds.print()
 
-# sink = KafkaSink.builder() \
-#     .set_bootstrap_servers(f"{kafka_host}:9091") \
-#     .set_record_serializer(
-#         KafkaRecordSerializationSchema.builder()
-#             .set_topic("output-3p")
-#             .set_value_serialization_schema(SchemaControl.get_access_count_serialization())
-#             .build()
-#     ) \
-#     .set_delivery_guarantee(DeliveryGuarantee.AT_LEAST_ONCE) \
-#     .build()
-# process_ds.sink_to(sink)
+sink = KafkaSink.builder() \
+    .set_bootstrap_servers(f"{kafka_host}:9091") \
+    .set_record_serializer(
+        KafkaRecordSerializationSchema.builder()
+            .set_topic("output-1p")
+            .set_value_serialization_schema(SchemaControl.get_access_count_serialization())
+            .build()
+    ) \
+    .set_delivery_guarantee(DeliveryGuarantee.AT_LEAST_ONCE) \
+    .build()
+process_ds.sink_to(sink)
 
 env.execute("streaming_url_topic_count")
