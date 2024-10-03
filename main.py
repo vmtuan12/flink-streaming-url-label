@@ -17,15 +17,9 @@ load_dotenv()
 kafka_host = os.getenv('KAFKA_HOST')
 group_name = "group-1"
 
-class CountWindowAverage(FlatMapFunction):
-    def flat_map(self, value):
-        current_timestamp = value["created_at_sec"]
-        yield Row(value["subscriberid"], value["label"], value["count"], value["created_at"], str(datetime.now()), int(time.time()) - current_timestamp)
-
 config = Configuration()
 config.set_string('state.backend.type', 'hashmap')
 env = StreamExecutionEnvironment.get_execution_environment(config)
-#env = StreamExecutionEnvironment.get_execution_environment()
 #env.set_parallelism(22)
 # env.enable_checkpointing(interval=1000)
 env.set_python_executable("/home/mhtuan/anaconda3/envs/flink-env/bin/python")
@@ -45,7 +39,6 @@ ds_url = env.from_source(url_source, WatermarkStrategy.for_monotonous_timestamps
 ds_url.print()
 
 key_url_ds = ds_url.key_by(lambda record: record["subscriberid"], key_type=Types.INT())
-# flatmap_ds = key_url_ds.flat_map(CountWindowAverage(), output_type=COUNT_ACCESS_TYPE_INFO).set_parallelism(22)
 process_ds = key_url_ds.process(CountAccessProcessFunction(), output_type=COUNT_ACCESS_TYPE_INFO)
 # process_ds.print()
 
